@@ -8,12 +8,12 @@
     <style>
         :root {
             --bg-dark: #07050c;
-            --card-bg: rgba(22, 14, 38, 0.7);
+            --card-bg: rgba(22, 14, 38, 0.72);
             --accent-purple: #9d4edd;
             --accent-neon: #d55cff;
             --text-main: #f5f2ff;
             --text-muted: #9b8cb8;
-            --border-glass: rgba(180, 110, 255, 0.2);
+            --border-glass: rgba(180, 110, 255, 0.22);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Montserrat', sans-serif; background: var(--bg-dark); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
@@ -24,10 +24,11 @@
         .logo-wrap { display: flex; align-items: center; gap: 12px; }
         .site-logo { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; box-shadow: 0 0 15px rgba(213, 92, 255, 0.5); }
         .logo-text { font-family: 'Rajdhani', sans-serif; font-size: 28px; font-weight: 700; letter-spacing: 3px; background: linear-gradient(90deg, #fff, var(--accent-neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        nav { display: flex; gap: 8px; flex-wrap: wrap; }
-        nav button { background: transparent; border: 1px solid transparent; color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; padding: 10px 16px; border-radius: 8px; cursor: pointer; transition: 0.25s; }
-        nav button:hover { color: #fff; background: rgba(199, 125, 255, 0.12); }
+        nav { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        nav button, nav a { background: transparent; border: 1px solid transparent; color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; padding: 10px 16px; border-radius: 8px; cursor: pointer; transition: 0.25s; text-decoration: none; }
+        nav button:hover, nav a:hover { color: #fff; background: rgba(199, 125, 255, 0.12); }
         nav button.active { color: #fff; background: linear-gradient(135deg, rgba(157, 78, 221, 0.4), rgba(213, 92, 255, 0.2)); border-color: rgba(213, 92, 255, 0.6); box-shadow: 0 0 18px rgba(157, 78, 221, 0.4); }
+        nav a.ds-link { color: #e0aaff; border-color: rgba(213, 92, 255, 0.45); background: rgba(123, 44, 191, 0.2); }
         main { max-width: 1050px; margin: 35px auto; padding: 0 20px; }
         .page { display: none; animation: fadeUp 0.35s ease; }
         .page.active { display: block; }
@@ -38,7 +39,7 @@
         .section-title { font-family: 'Rajdhani', sans-serif; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 18px; border-left: 4px solid var(--accent-neon); padding-left: 12px; }
         .top3-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-bottom: 40px; }
         .card { background: var(--card-bg); border: 1px solid var(--border-glass); border-radius: 14px; padding: 22px; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); border-color: var(--accent-neon); box-shadow: 0 10px 25px rgba(123, 44, 191, 0.3); }
+        .card:hover { transform: translateY(-4px); border-color: var(--accent-neon); box-shadow: 0 10px 25px rgba(123, 44, 191, 0.3); }
         .rank-badge { font-family: 'Rajdhani', sans-serif; font-size: 17px; font-weight: 700; color: #e0aaff; margin-bottom: 8px; display: flex; justify-content: space-between; }
         .points-pill { background: rgba(157, 78, 221, 0.25); border: 1px solid rgba(213, 92, 255, 0.5); padding: 3px 10px; border-radius: 20px; font-size: 13px; }
         .team-name { font-size: 21px; font-weight: 900; margin-bottom: 12px; }
@@ -62,9 +63,9 @@
         </div>
         <nav>
             <button class="tab-btn active" onclick="openPage('home', this)">Главная</button>
-            <button class="tab-btn" onclick="openPage('tournaments', this)">Турниры</button>
             <button class="tab-btn" onclick="openPage('rating', this)">Рейтинг команд</button>
             <button class="tab-btn" onclick="openPage('hall', this)">Зал славы</button>
+            <a href="discord.html" class="ds-link">Турниры & Discord →</a>
         </nav>
     </header>
     <main>
@@ -91,16 +92,6 @@
                     <div class="roster"><span class="player-tag">*p*4*e*l*k*a*</span><span class="player-tag">kill_airship</span><span class="player-tag">MaryKrouls</span><span class="player-tag">F**k you</span></div>
                 </div>
             </div>
-            <div class="section-title">Действующие турниры</div>
-            <div class="card"><p style="color:#9b8cb8">Coming soon...</p></div>
-        </section>
-
-        <section id="tournaments" class="page">
-            <div class="section-title">Турниры</div>
-            <div class="card">
-                <div class="team-name">Регистрация: The Limb 2</div>
-                <p style="color:#9b8cb8">Скоро здесь откроется приём заявок на участие.</p>
-            </div>
         </section>
 
         <section id="rating" class="page">
@@ -125,7 +116,7 @@
             </div>
         </section>
     </main>
-    <footer>© 2026 TOTV. Все права защищены. | Правила | Контакты | Поддержка</footer>
+    <footer>© 2026 TOTV. Все права защищены. | The Order & ИгРоМаНиЯ</footer>
     <script>
         function openPage(pageId, btn) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
