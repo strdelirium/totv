@@ -3,35 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOTV — Discord и Регистрация</title>
+    <title>TOTV — Регистрация на турнир и Discord</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #07050c;
-            --card-bg: rgba(22, 14, 38, 0.78);
+            --card-bg: rgba(22, 14, 38, 0.82);
             --accent-neon: #d55cff;
             --text-main: #f5f2ff;
             --text-muted: #9b8cb8;
             --border-glass: rgba(180, 110, 255, 0.25);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Montserrat', sans-serif; background: var(--bg-dark); color: var(--text-main); min-height: 100vh; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg-dark); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
         .bg-glow { position: fixed; width: 550px; height: 550px; border-radius: 50%; filter: blur(150px); z-index: -1; opacity: 0.28; }
         .glow-1 { top: -120px; left: -100px; background: #7b2cbf; }
         .glow-2 { bottom: -120px; right: -100px; background: #c77dff; }
-        header { background: rgba(11, 7, 20, 0.88); backdrop-filter: blur(14px); padding: 14px 35px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); }
+        header { background: rgba(11, 7, 20, 0.9); backdrop-filter: blur(14px); padding: 14px 35px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px; }
         .logo-text { font-family: 'Rajdhani', sans-serif; font-size: 28px; font-weight: 700; letter-spacing: 3px; background: linear-gradient(90deg, #fff, var(--accent-neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .back-btn { color: #fff; text-decoration: none; font-size: 13px; font-weight: 700; text-transform: uppercase; padding: 10px 16px; border-radius: 8px; border: 1px solid rgba(213, 92, 255, 0.5); background: rgba(157, 78, 221, 0.25); transition: 0.25s; }
-        .back-btn:hover { background: rgba(213, 92, 255, 0.4); }
-        main { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
-        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
-        .card { background: var(--card-bg); border: 1px solid var(--border-glass); border-radius: 14px; padding: 26px; }
-        h2 { font-family: 'Rajdhani', sans-serif; font-size: 25px; text-transform: uppercase; margin-bottom: 10px; color: #e0aaff; }
-        p { color: var(--text-muted); font-size: 14px; margin-bottom: 18px; line-height: 1.5; }
-        .form-input { width: 100%; padding: 12px; margin-bottom: 14px; border-radius: 8px; border: 1px solid rgba(213, 92, 255, 0.4); background: #0c0714; color: #fff; font-family: inherit; }
-        .btn-glow { width: 100%; background: linear-gradient(90deg, #7b2cbf, #c77dff); color: #fff; border: none; padding: 14px; border-radius: 8px; font-weight: 700; text-transform: uppercase; cursor: pointer; box-shadow: 0 0 20px rgba(157, 78, 221, 0.5); transition: 0.2s; }
-        .btn-glow:hover { transform: scale(1.02); box-shadow: 0 0 28px rgba(213, 92, 255, 0.8); }
+        .header-btns { display: flex; gap: 10px; }
+        .nav-btn { color: #fff; text-decoration: none; font-size: 13px; font-weight: 700; text-transform: uppercase; padding: 10px 16px; border-radius: 8px; border: 1px solid rgba(213, 92, 255, 0.5); background: rgba(157, 78, 221, 0.25); transition: 0.25s; cursor: pointer; font-family: inherit; }
+        .nav-btn:hover { background: rgba(213, 92, 255, 0.45); }
+        main { max-width: 1120px; margin: 35px auto; padding: 0 20px; }
+        .layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; align-items: start; }
+        @media (max-width: 850px) { .layout { grid-template-columns: 1fr; } }
+        .card { background: var(--card-bg); border: 1px solid var(--border-glass); border-radius: 14px; padding: 26px; backdrop-filter: blur(12px); }
+        h2 { font-family: 'Rajdhani', sans-serif; font-size: 25px; text-transform: uppercase; margin-bottom: 8px; color: #e0aaff; letter-spacing: 1px; }
+        p.sub { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; line-height: 1.5; }
+        .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 550px) { .form-row-2 { grid-template-columns: 1fr; } }
+        .form-input { width: 100%; padding: 11px 14px; margin-bottom: 12px; border-radius: 8px; border: 1px solid rgba(213, 92, 255, 0.35); background: #0c0714; color: #fff; font-family: inherit; font-size: 13px; transition: 0.2s; }
+        .form-input:focus { outline: none; border-color: var(--accent-neon); box-shadow: 0 0 12px rgba(213, 92, 255, 0.3); }
+        label.field-label { display: block; font-size: 12px; font-weight: 700; color: #d8bbff; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .player-block { background: rgba(12, 7, 22, 0.65); border: 1px solid rgba(180, 110, 255, 0.18); border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+        .player-title { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; color: var(--accent-neon); margin-bottom: 10px; }
+        .player-grid { display: grid; grid-template-columns: 1fr 1.2fr 1.2fr; gap: 8px; }
+        @media (max-width: 650px) { .player-grid { grid-template-columns: 1fr; } }
+        .player-grid .form-input { margin-bottom: 0; }
+        .agree-box { display: flex; align-items: flex-start; gap: 10px; margin: 16px 0; font-size: 13px; color: #e6d9ff; line-height: 1.4; }
+        .agree-box input[type="checkbox"] { width: 18px; height: 18px; accent-color: #c77dff; cursor: pointer; margin-top: 2px; flex-shrink: 0; }
+        .rules-link { color: var(--accent-neon); text-decoration: underline; cursor: pointer; font-weight: 700; }
+        .btn-glow { width: 100%; background: linear-gradient(90deg, #7b2cbf, #c77dff); color: #fff; border: none; padding: 15px; border-radius: 8px; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; box-shadow: 0 0 20px rgba(157, 78, 221, 0.5); transition: 0.2s; }
+        .btn-glow:hover { transform: scale(1.01); box-shadow: 0 0 28px rgba(213, 92, 255, 0.85); }
         #status { margin-top: 14px; font-weight: 700; font-size: 14px; text-align: center; }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(5, 3, 10, 0.85); backdrop-filter: blur(8px); z-index: 200; justify-content: center; align-items: center; padding: 20px; }
+        .modal-overlay.open { display: flex; animation: fadeIn 0.25s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-card { background: #130b24; border: 1px solid var(--accent-neon); border-radius: 14px; max-width: 650px; width: 100%; padding: 28px; box-shadow: 0 0 40px rgba(157, 78, 221, 0.4); max-height: 85vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 12px; margin-bottom: 16px; }
+        .close-modal { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+        .rules-list { padding-left: 20px; color: #e6d9ff; font-size: 14px; line-height: 1.7; }
+        .rules-list li { margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -39,55 +61,149 @@
     <div class="bg-glow glow-2"></div>
     <header>
         <div class="logo-text">TOTV // DISCORD</div>
-        <a href="index.html" class="back-btn">← На главную TOTV</a>
+        <div class="header-btns">
+            <button type="button" class="nav-btn" onclick="toggleRules(true)">📜 Правила турнира</button>
+            <a href="index.html" class="nav-btn">← На главную TOTV</a>
+        </div>
     </header>
     <main>
-        <div class="grid-2">
+        <div class="layout">
             <div class="card">
-                <h2>Заявка на турнир The Limb 2</h2>
-                <p>Заполни форму — карточка команды автоматически отправится судьям на сервер Discord.</p>
+                <h2>Регистрация на турнир</h2>
+                <p class="sub">Выберите дисциплину — поля автоматически подстроятся под нужные ссылки (FACEIT для CS или Dotabuff для Dota 2).</p>
                 <form id="dsForm">
-                    <select id="game" class="form-input">
+                    <label class="field-label">Дисциплина турнира</label>
+                    <select id="game" class="form-input" onchange="updateFormFields()" style="font-weight:700; border-color: var(--accent-neon);">
                         <option value="Counter-Strike">Counter-Strike</option>
                         <option value="Dota 2">Dota 2</option>
                     </select>
-                    <input type="text" id="team" class="form-input" placeholder="Название команды" required>
-                    <input type="text" id="captain" class="form-input" placeholder="Discord капитана (@ник)" required>
-                    <textarea id="players" class="form-input" rows="4" placeholder="Состав (5 ников игроков через запятую)" required></textarea>
+                    <div class="form-row-2">
+                        <div>
+                            <label class="field-label">Название команды</label>
+                            <input type="text" id="team" class="form-input" placeholder="Например: Somali Pirates" required>
+                        </div>
+                        <div>
+                            <label class="field-label">Тег команды (2–5 букв)</label>
+                            <input type="text" id="tag" class="form-input" placeholder="Например: SP" maxlength="6" required>
+                        </div>
+                    </div>
+                    <div class="form-row-2">
+                        <div>
+                            <label class="field-label">Discord капитана</label>
+                            <input type="text" id="captain" class="form-input" placeholder="@airship" required>
+                        </div>
+                        <div>
+                            <label class="field-label">Запасной игрок (необязательно)</label>
+                            <input type="text" id="subPlayer" class="form-input" placeholder="Ник + ссылка на Steam">
+                        </div>
+                    </div>
+                    <label class="field-label" style="margin-top: 8px; margin-bottom: 10px;">Основной состав (5 игроков)</label>
+                    <div id="playersContainer"></div>
+                    <div class="agree-box">
+                        <input type="checkbox" id="rulesAgree" required>
+                        <label for="rulesAgree">
+                            Я ознакомлен и полностью согласен с <span class="rules-link" onclick="toggleRules(true)">правилами турнира TOTV</span>, включая случайное распределение матчей по времени в течение дня.
+                        </label>
+                    </div>
                     <button type="submit" id="btn" class="btn-glow">Отправить заявку в Discord</button>
                 </form>
                 <div id="status"></div>
             </div>
-
-            <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
-                <div>
-                    <h2>Сервер The Order & ИгРоМаНиЯ</h2>
-                    <p>Следи за онлайном участников, расписанием матчей и заходи в голосовые каналы прямо с сайта.</p>
-                </div>
-                <iframe src="https://discord.com" width="100%" height="340" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" style="border-radius:10px;"></iframe>
+            <div class="card">
+                <h2>Сервер The Order & ИгРоМаНиЯ</h2>
+                <p class="sub">Заходи в Discord, чтобы следить за турнирной сеткой, расписанием матчей и общаться с участниками.</p>
+                <iframe id="discordWidget" width="100%" height="460" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" style="border-radius:10px;"></iframe>
             </div>
         </div>
     </main>
+    <div id="rulesModal" class="modal-overlay" onclick="if(event.target === this) toggleRules(false)">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2 style="margin:0;">📜 Регламент и правила турнира TOTV</h2>
+                <button type="button" class="close-modal" onclick="toggleRules(false)">&times;</button>
+            </div>
+            <ol class="rules-list">
+                <li><strong>Расписание матчей:</strong> Все команды распределяются по времени проведения игр случайным образом (рандомно) в течение игрового дня.</li>
+                <li><strong>Состав команды:</strong> В заявке указываются 5 основных игроков и (при необходимости) 1 запасной. Передачи аккаунтов запрещены.</li>
+                <li><strong>Честная игра:</strong> Использование любого стороннего ПО (читов, скриптов) ведёт к мгновенной дисквалификации команды и бану на серверах The Order & ИгРоМаНиЯ.</li>
+                <li><em>(Остальные пункты регламента будут добавлены организаторами...)</em></li>
+            </ol>
+            <button type="button" class="btn-glow" style="margin-top:20px;" onclick="toggleRules(false)">Понятно, закрыть</button>
+        </div>
+    </div>
 
     <script>
         const WEBHOOK_URL = "https://discord.com/api/webhooks/1575601744107540520/nnijqIVjiu1zfuQkndqiUwuI8nuQdKflKrdJmOb329z55XkM00ea1R7BJlTFqWSJd7l_";
+        const SERVER_ID = "1092877622318477384";
+
+        document.getElementById("discordWidget").src = `https://discord.com{SERVER_ID}&theme=dark`;
+
+        function toggleRules(show) {
+            const modal = document.getElementById("rulesModal");
+            if (show) modal.classList.add("open");
+            else modal.classList.remove("open");
+        }
+
+        function renderPlayers() {
+            const container = document.getElementById("playersContainer");
+            let html = "";
+            for (let i = 1; i <= 5; i++) {
+                const roleLabel = i === 1 ? "Игрок #1 (Капитан)" : `Игрок #${i}`;
+                html += `
+                <div class="player-block">
+                    <div class="player-title"><span>${roleLabel}</span></div>
+                    <div class="player-grid">
+                        <input type="text" id="p_nick_${i}" class="form-input" placeholder="Никнейм" required>
+                        <input type="url" id="p_steam_${i}" class="form-input" placeholder="Ссылка на Steam" required>
+                        <input type="url" id="p_stat_${i}" class="form-input stat-input" placeholder="Ссылка на FACEIT" required>
+                    </div>
+                </div>`;
+            }
+            container.innerHTML = html;
+        }
+
+        function updateFormFields() {
+            const game = document.getElementById("game").value;
+            const statInputs = document.querySelectorAll(".stat-input");
+            const placeholderText = game === "Counter-Strike" ? "Ссылка на FACEIT" : "Ссылка на Dotabuff";
+            statInputs.forEach(input => {
+                input.placeholder = placeholderText;
+            });
+        }
+
+        renderPlayers();
 
         document.getElementById("dsForm").addEventListener("submit", async function(e) {
             e.preventDefault();
             const btn = document.getElementById("btn");
             const status = document.getElementById("status");
+            const game = document.getElementById("game").value;
+            const statName = game === "Counter-Strike" ? "FACEIT" : "Dotabuff";
+
             btn.disabled = true;
-            btn.textContent = "Отправка...";
+            btn.textContent = "Отправка заявки...";
+
+            let rosterText = "";
+            for (let i = 1; i <= 5; i++) {
+                const nick = document.getElementById(`p_nick_${i}`).value;
+                const steam = document.getElementById(`p_steam_${i}`).value;
+                const stat = document.getElementById(`p_stat_${i}`).value;
+                const crown = i === 1 ? "👑 " : "";
+                rosterText += `**${i}. ${crown}${nick}** — [Steam](${steam}) | [${statName}](${stat})\n`;
+            }
+
+            const sub = document.getElementById("subPlayer").value.trim() || "Нет";
 
             const payload = {
                 embeds: [{
-                    title: "🏆 Новая заявка на турнир (TOTV)",
+                    title: `🏆 Новая заявка на турнир (${game})`,
                     color: 10309341,
                     fields: [
-                        { name: "Дисциплина", value: document.getElementById("game").value, inline: true },
-                        { name: "Команда", value: document.getElementById("team").value, inline: true },
-                        { name: "Капитан", value: document.getElementById("captain").value, inline: false },
-                        { name: "Состав", value: document.getElementById("players").value, inline: false }
+                        { name: "Команда", value: `${document.getElementById("team").value} [${document.getElementById("tag").value}]`, inline: true },
+                        { name: "Discord капитана", value: document.getElementById("captain").value, inline: true },
+                        { name: "Основной состав", value: rosterText, inline: false },
+                        { name: "Запасной игрок", value: sub, inline: false },
+                        { name: "Правила", value: "✅ Капитан подтвердил согласие с регламентом", inline: false }
                     ],
                     footer: { text: "TOTV Esports Platform" }
                 }]
@@ -101,8 +217,9 @@
                 });
                 if (res.ok) {
                     status.style.color = "#4ade80";
-                    status.textContent = "✅ Заявка успешно улетела в Discord!";
+                    status.textContent = "✅ Заявка с полным составом успешно улетела в Discord!";
                     e.target.reset();
+                    updateFormFields();
                 } else { throw new Error(); }
             } catch {
                 status.style.color = "#f87171";
