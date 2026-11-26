@@ -3,116 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOTV — Связь с Discord</title>
+    <title>TOTV — Discord и Регистрация</title>
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        body {
-            background: #07050c;
-            color: #f5f2ff;
-            font-family: sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
+        :root {
+            --bg-dark: #07050c;
+            --card-bg: rgba(22, 14, 38, 0.78);
+            --accent-neon: #d55cff;
+            --text-main: #f5f2ff;
+            --text-muted: #9b8cb8;
+            --border-glass: rgba(180, 110, 255, 0.25);
         }
-        .box {
-            background: rgba(22, 14, 38, 0.85);
-            border: 1px solid rgba(213, 92, 255, 0.3);
-            border-radius: 14px;
-            padding: 30px;
-            width: 100%;
-            max-width: 450px;
-            box-shadow: 0 0 30px rgba(157, 78, 221, 0.25);
-        }
-        h2 { margin-top: 0; color: #e0aaff; }
-        input, textarea, select {
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 14px;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(213, 92, 255, 0.4);
-            background: #0e0918;
-            color: #fff;
-        }
-        button {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            background: linear-gradient(90deg, #7b2cbf, #c77dff);
-            color: #fff;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-        #status { margin-top: 12px; font-weight: bold; text-align: center; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg-dark); color: var(--text-main); min-height: 100vh; }
+        .bg-glow { position: fixed; width: 550px; height: 550px; border-radius: 50%; filter: blur(150px); z-index: -1; opacity: 0.28; }
+        .glow-1 { top: -120px; left: -100px; background: #7b2cbf; }
+        .glow-2 { bottom: -120px; right: -100px; background: #c77dff; }
+        header { background: rgba(11, 7, 20, 0.88); backdrop-filter: blur(14px); padding: 14px 35px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); }
+        .logo-text { font-family: 'Rajdhani', sans-serif; font-size: 28px; font-weight: 700; letter-spacing: 3px; background: linear-gradient(90deg, #fff, var(--accent-neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .back-btn { color: #fff; text-decoration: none; font-size: 13px; font-weight: 700; text-transform: uppercase; padding: 10px 16px; border-radius: 8px; border: 1px solid rgba(213, 92, 255, 0.5); background: rgba(157, 78, 221, 0.25); transition: 0.25s; }
+        .back-btn:hover { background: rgba(213, 92, 255, 0.4); }
+        main { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+        .card { background: var(--card-bg); border: 1px solid var(--border-glass); border-radius: 14px; padding: 26px; }
+        h2 { font-family: 'Rajdhani', sans-serif; font-size: 25px; text-transform: uppercase; margin-bottom: 10px; color: #e0aaff; }
+        p { color: var(--text-muted); font-size: 14px; margin-bottom: 18px; line-height: 1.5; }
+        .form-input { width: 100%; padding: 12px; margin-bottom: 14px; border-radius: 8px; border: 1px solid rgba(213, 92, 255, 0.4); background: #0c0714; color: #fff; font-family: inherit; }
+        .btn-glow { width: 100%; background: linear-gradient(90deg, #7b2cbf, #c77dff); color: #fff; border: none; padding: 14px; border-radius: 8px; font-weight: 700; text-transform: uppercase; cursor: pointer; box-shadow: 0 0 20px rgba(157, 78, 221, 0.5); transition: 0.2s; }
+        .btn-glow:hover { transform: scale(1.02); box-shadow: 0 0 28px rgba(213, 92, 255, 0.8); }
+        #status { margin-top: 14px; font-weight: 700; font-size: 14px; text-align: center; }
     </style>
 </head>
 <body>
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+    <header>
+        <div class="logo-text">TOTV // DISCORD</div>
+        <a href="index.html" class="back-btn">← На главную TOTV</a>
+    </header>
+    <main>
+        <div class="grid-2">
+            <div class="card">
+                <h2>Заявка на турнир The Limb 2</h2>
+                <p>Заполни форму — карточка команды автоматически отправится судьям на сервер Discord.</p>
+                <form id="dsForm">
+                    <select id="game" class="form-input">
+                        <option value="Counter-Strike">Counter-Strike</option>
+                        <option value="Dota 2">Dota 2</option>
+                    </select>
+                    <input type="text" id="team" class="form-input" placeholder="Название команды" required>
+                    <input type="text" id="captain" class="form-input" placeholder="Discord капитана (@ник)" required>
+                    <textarea id="players" class="form-input" rows="4" placeholder="Состав (5 ников игроков через запятую)" required></textarea>
+                    <button type="submit" id="btn" class="btn-glow">Отправить заявку в Discord</button>
+                </form>
+                <div id="status"></div>
+            </div>
 
-<div class="box">
-    <h2>Отправка заявки в Discord</h2>
-    <form id="dsForm">
-        <select id="game">
-            <option value="Counter-Strike">Counter-Strike</option>
-            <option value="Dota 2">Dota 2</option>
-        </select>
-        <input type="text" id="team" placeholder="Название команды" required>
-        <input type="text" id="discordTag" placeholder="Ваш Discord (например, @user)" required>
-        <textarea id="players" rows="3" placeholder="Состав команды (ники игроков)" required></textarea>
-        <button type="submit" id="btn">Отправить на сервер</button>
-    </form>
-    <div id="status"></div>
-</div>
+            <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+                <div>
+                    <h2>Сервер The Order & ИгРоМаНиЯ</h2>
+                    <p>Следи за онлайном участников, расписанием матчей и заходи в голосовые каналы прямо с сайта.</p>
+                </div>
+                <iframe src="https://discord.com" width="100%" height="340" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" style="border-radius:10px;"></iframe>
+            </div>
+        </div>
+    </main>
 
-<script>
-    const WEBHOOK_URL = "https://discord.com/api/webhooks/1575601744107540520/nnijqIVjiu1zfuQkndqiUwuI8nuQdKflKrdJmOb329z55XkM00ea1R7BJlTFqWSJd7l_";
+    <script>
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1575601744107540520/nnijqIVjiu1zfuQkndqiUwuI8nuQdKflKrdJmOb329z55XkM00ea1R7BJlTFqWSJd7l_";
 
-    document.getElementById("dsForm").addEventListener("submit", async function(e) {
-        e.preventDefault();
-        const btn = document.getElementById("btn");
-        const status = document.getElementById("status");
-        
-        btn.disabled = true;
-        btn.textContent = "Отправка...";
+        document.getElementById("dsForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById("btn");
+            const status = document.getElementById("status");
+            btn.disabled = true;
+            btn.textContent = "Отправка...";
 
-        const data = {
-            embeds: [{
-                title: "🎮 Новая заявка с сайта TOTV",
-                color: 10309341,
-                fields: [
-                    { name: "Дисциплина", value: document.getElementById("game").value, inline: true },
-                    { name: "Команда", value: document.getElementById("team").value, inline: true },
-                    { name: "Капитан", value: document.getElementById("discordTag").value, inline: false },
-                    { name: "Состав", value: document.getElementById("players").value, inline: false }
-                ]
-            }]
-        };
+            const payload = {
+                embeds: [{
+                    title: "🏆 Новая заявка на турнир (TOTV)",
+                    color: 10309341,
+                    fields: [
+                        { name: "Дисциплина", value: document.getElementById("game").value, inline: true },
+                        { name: "Команда", value: document.getElementById("team").value, inline: true },
+                        { name: "Капитан", value: document.getElementById("captain").value, inline: false },
+                        { name: "Состав", value: document.getElementById("players").value, inline: false }
+                    ],
+                    footer: { text: "TOTV Esports Platform" }
+                }]
+            };
 
-        try {
-            const response = await fetch(WEBHOOK_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
-            });
-
-            if (response.ok) {
-                status.style.color = "#4ade80";
-                status.textContent = "✅ Отправлено в Discord!";
-                e.target.reset();
-            } else {
-                throw new Error();
+            try {
+                const res = await fetch(WEBHOOK_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    status.style.color = "#4ade80";
+                    status.textContent = "✅ Заявка успешно улетела в Discord!";
+                    e.target.reset();
+                } else { throw new Error(); }
+            } catch {
+                status.style.color = "#f87171";
+                status.textContent = "❌ Ошибка! Проверь ссылку вебхука в коде.";
             }
-        } catch (err) {
-            status.style.color = "#f87171";
-            status.textContent = "❌ Ошибка! Проверь ссылку вебхука.";
-        }
-
-        btn.disabled = false;
-        btn.textContent = "Отправить на сервер";
-    });
-</script>
-
+            btn.disabled = false;
+            btn.textContent = "Отправить заявку в Discord";
+        });
+    </script>
 </body>
 </html>
