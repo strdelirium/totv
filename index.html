@@ -7,82 +7,177 @@
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #0b0a10;
-            --bg-surface: #13111c;
-            --bg-elevated: #1a1726;
-            --header-bg: rgba(11, 10, 16, 0.85);
-            --accent: #8b5cf6;
-            --accent-soft: rgba(139, 92, 246, 0.14);
-            --accent-glow: rgba(139, 92, 246, 0.25);
-            --text-main: #f3f1f8;
-            --text-muted: #8e89a3;
-            --border: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(139, 92, 246, 0.45);
+            --bg-main: #09080f;
+            --bg-surface: rgba(19, 17, 29, 0.82);
+            --bg-elevated: rgba(30, 26, 48, 0.85);
+            --header-bg: rgba(9, 8, 15, 0.85);
+            --accent: #9333ea;
+            --accent-bright: #c084fc;
+            --accent-soft: rgba(147, 51, 234, 0.16);
+            --text-main: #f4f2fa;
+            --text-muted: #948ea8;
+            --border: rgba(168, 85, 247, 0.18);
+            --border-hover: rgba(192, 132, 252, 0.55);
+            --line-rgb: 168, 85, 247;
         }
         body.light-theme {
-            --bg-main: #f7f6fb;
-            --bg-surface: #ffffff;
-            --bg-elevated: #f0eef7;
-            --header-bg: rgba(247, 246, 251, 0.88);
-            --accent: #7c3aed;
-            --accent-soft: rgba(124, 58, 237, 0.1);
-            --accent-glow: rgba(124, 58, 237, 0.18);
-            --text-main: #181622;
-            --text-muted: #645f78;
-            --border: rgba(24, 22, 34, 0.09);
-            --border-hover: rgba(124, 58, 237, 0.45);
+            --bg-main: #f5f3fa;
+            --bg-surface: rgba(255, 255, 255, 0.88);
+            --bg-elevated: rgba(243, 239, 252, 0.95);
+            --header-bg: rgba(245, 243, 250, 0.88);
+            --accent: #7e22ce;
+            --accent-bright: #9333ea;
+            --accent-soft: rgba(126, 34, 206, 0.1);
+            --text-main: #171522;
+            --text-muted: #625c7a;
+            --border: rgba(126, 34, 206, 0.15);
+            --border-hover: rgba(126, 34, 206, 0.5);
+            --line-rgb: 126, 34, 206;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; overflow-x: hidden; transition: background-color 0.25s ease, color 0.25s ease; }
-        #cursor-glow { position: fixed; top: 0; left: 0; width: 340px; height: 340px; border-radius: 50%; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); pointer-events: none; transform: translate(-50%, -50%); z-index: 0; opacity: 0; transition: opacity 0.3s ease; }
-        @media (hover: none) { #cursor-glow { display: none; } }
-        header { background: var(--header-bg); backdrop-filter: blur(12px); padding: 14px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 12px; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+        #bg-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        header {
+            background: var(--header-bg);
+            backdrop-filter: blur(14px);
+            padding: 14px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
         .left-head { display: flex; align-items: center; gap: 16px; }
-        .controls-group { display: flex; align-items: center; gap: 4px; background: var(--bg-surface); padding: 4px; border-radius: 8px; border: 1px solid var(--border); }
-        .ctrl-btn { display: flex; align-items: center; gap: 6px; background: transparent; border: none; color: var(--text-muted); font-family: inherit; font-size: 12px; font-weight: 600; padding: 5px 9px; border-radius: 6px; cursor: pointer; transition: 0.18s; }
+        .controls-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--bg-surface);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        .ctrl-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 5px 9px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
         .ctrl-btn:hover { color: var(--text-main); background: var(--bg-elevated); }
-        .ctrl-btn.active { background: var(--accent-soft); color: var(--accent); }
-        .ctrl-btn:active { transform: scale(0.95); }
+        .ctrl-btn.active { background: var(--accent-soft); color: var(--accent-bright); }
+        .ctrl-btn:active { transform: scale(0.93); }
         .flag-icon { width: 16px; height: 12px; border-radius: 2px; flex-shrink: 0; }
         .logo-wrap { display: flex; align-items: center; gap: 10px; }
-        .site-logo { width: 34px; height: 34px; border-radius: 7px; object-fit: cover; }
-        .logo-text { font-family: 'Rajdhani', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: 2px; color: var(--text-main); }
-        .logo-text span { color: var(--accent); }
+        .site-logo { width: 34px; height: 34px; border-radius: 7px; object-fit: cover; border: 1px solid var(--border); }
+        .logo-text { font-family: 'Rajdhani', sans-serif; font-size: 25px; font-weight: 700; letter-spacing: 2px; color: var(--text-main); }
+        .logo-text span { color: var(--accent-bright); }
         nav { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-        .btn-ui { background: transparent; border: 1px solid transparent; color: var(--text-muted); font-family: inherit; font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 8px; cursor: pointer; text-decoration: none; transition: 0.15s; user-select: none; }
+        .btn-ui {
+            position: relative;
+            overflow: hidden;
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.12s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+            user-select: none;
+        }
+        .btn-ui::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-bright);
+            transition: width 0.25s ease, left 0.25s ease;
+        }
+        .btn-ui:hover::after, .btn-ui.active::after { width: 70%; left: 15%; }
         .btn-ui:hover { color: var(--text-main); background: var(--bg-surface); border-color: var(--border); }
-        .btn-ui.active { color: var(--accent); background: var(--accent-soft); border-color: var(--border-hover); }
-        .btn-ui:active { transform: scale(0.96); box-shadow: 0 0 12px var(--accent-glow); border-color: var(--accent); }
+        .btn-ui.active { color: var(--accent-bright); background: var(--accent-soft); border-color: var(--border-hover); }
+        .btn-ui:active { transform: scale(0.95); }
         .ds-link { border-color: var(--border); color: var(--text-main); background: var(--bg-surface); }
-        .ds-link:hover { border-color: var(--accent); color: var(--accent); }
-        main { max-width: 1000px; margin: 40px auto; padding: 0 20px; position: relative; z-index: 1; }
-        .page { display: none; animation: fadeIn 0.25s ease; }
+        .ds-link:hover { border-color: var(--accent-bright); color: var(--accent-bright); }
+        main { max-width: 1020px; margin: 40px auto; padding: 0 20px; position: relative; z-index: 1; }
+        .page { display: none; animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-        .hero { background: var(--bg-surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 12px; padding: 28px 32px; margin-bottom: 36px; }
-        .hero h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .hero {
+            background: var(--bg-surface);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent-bright);
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin-bottom: 36px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-bright), transparent);
+            animation: scanLine 4s infinite linear;
+        }
+        @keyframes scanLine { 0% { left: -60%; } 100% { left: 120%; } }
+        .hero h1 { font-size: 25px; font-weight: 700; margin-bottom: 8px; }
         .hero p { color: var(--text-muted); line-height: 1.6; font-size: 14px; max-width: 720px; }
-        .section-title { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-muted); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-        .section-title::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+        .section-title { font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-main); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+        .section-title::before { content: ''; width: 14px; height: 2px; background: var(--accent-bright); }
         .top3-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 40px; }
-        .card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; transition: 0.2s; }
-        .card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+        .card { background: var(--bg-surface); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 12px; padding: 20px; transition: border-color 0.2s ease, transform 0.2s ease; }
+        .card:hover { border-color: var(--border-hover); transform: translateY(-3px); }
         .rank-badge { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-        .points-pill { background: var(--accent-soft); color: var(--accent); padding: 3px 9px; border-radius: 6px; font-size: 12px; font-weight: 600; }
-        .team-name { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+        .points-pill { background: var(--accent-soft); color: var(--accent-bright); border: 1px solid var(--border); padding: 3px 9px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+        .team-name { font-size: 19px; font-weight: 700; margin-bottom: 12px; }
         .roster { display: flex; flex-wrap: wrap; gap: 6px; }
         .player-tag { background: var(--bg-elevated); border: 1px solid var(--border); padding: 4px 8px; border-radius: 6px; font-size: 12px; color: var(--text-muted); }
-        .table-wrapper { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; overflow-x: auto; }
+        .table-wrapper { background: var(--bg-surface); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 12px; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; }
         th { color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--border); }
         td { padding: 15px 18px; border-top: 1px solid var(--border); font-size: 14px; }
         tr:hover td { background: var(--bg-elevated); }
-        .pts-cell { font-weight: 700; color: var(--accent); }
-        footer { text-align: center; padding: 24px; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border); margin-top: 60px; }
+        .pts-cell { font-weight: 700; color: var(--accent-bright); }
+        footer { text-align: center; padding: 24px; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border); margin-top: 60px; position: relative; z-index: 1; }
     </style>
 </head>
 <body>
-    <div id="cursor-glow"></div>
+    <canvas id="bg-canvas"></canvas>
     <header>
         <div class="left-head">
             <div class="controls-group">
@@ -99,7 +194,7 @@
             </div>
             <div class="logo-wrap">
                 <img src="logo.png" alt="TOTV" class="site-logo" onerror="this.style.display='none'">
-                <div class="logo-text">TOTV<span>.</span></div>
+                <div class="logo-text">TOTV<span>//</span>ESPORTS</div>
             </div>
         </div>
         <nav>
@@ -160,14 +255,78 @@
     <footer data-t="footerTxt">© 2026 TOTV. Все права защищены. | The Order & ИгРоМаНиЯ</footer>
 
     <script>
-        const glow = document.getElementById("cursor-glow");
-        document.addEventListener("mousemove", (e) => {
-            glow.style.opacity = "1";
-            glow.style.left = e.clientX + "px";
-            glow.style.top = e.clientY + "px";
-        });
-        document.addEventListener("mouseleave", () => { glow.style.opacity = "0"; });
+        // Анимированные линии и точки, реагирующие на курсор
+        const canvas = document.getElementById("bg-canvas");
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+        let mouse = { x: null, y: null };
 
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        window.addEventListener("mousemove", e => { mouse.x = e.x; mouse.y = e.y; });
+        window.addEventListener("mouseout", () => { mouse.x = null; mouse.y = null; });
+
+        for (let i = 0; i < 45; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.45,
+                vy: (Math.random() - 0.5) * 0.45,
+                size: Math.random() * 1.8 + 0.8
+            });
+        }
+
+        function animateLines() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const rgb = getComputedStyle(document.body).getPropertyValue("--line-rgb").trim();
+
+            for (let i = 0; i < particles.length; i++) {
+                let p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${rgb}, 0.45)`;
+                ctx.fill();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    let p2 = particles[j];
+                    let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(${rgb}, ${0.15 * (1 - dist / 120)})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+
+                if (mouse.x !== null) {
+                    let mDist = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+                    if (mDist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.strokeStyle = `rgba(${rgb}, ${0.45 * (1 - mDist / 150)})`;
+                        ctx.lineWidth = 1.1;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateLines);
+        }
+        animateLines();
+
+        // Тема и язык
         function applyTheme(theme) {
             const isLight = theme === "light";
             document.body.classList.toggle("light-theme", isLight);
@@ -196,7 +355,7 @@
                 topTitle: "Top 3 of the Month", rank1: "#1 Place", rank2: "#2 Place", rank3: "#3 Place",
                 thPlace: "Rank", thTeam: "Team", thRoster: "Roster", thPts: "Points",
                 bsTitle: "History of Blue Squirrel", bsDesc: "Archive of achievements and history of the legendary roster.",
-                footerTxt: "© 2026 TOTV. All rights reserved. | The Order & IgRoMaNiYa"
+                footerTxt: "© 2026 TOTV. All rights reserved. | The Order & IgRoМаНиЯ"
             }
         };
 
