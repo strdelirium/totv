@@ -7,174 +7,128 @@
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #07050c;
-            --card-bg: rgba(22, 14, 38, 0.72);
-            --accent-purple: #9d4edd;
-            --accent-neon: #d55cff;
-            --text-main: #f5f2ff;
-            --text-muted: #9b8cb8;
-            --border-glass: rgba(180, 110, 255, 0.22);
+            --bg-main: #0b0a10;
+            --bg-surface: #13111c;
+            --bg-elevated: #1a1726;
+            --header-bg: rgba(11, 10, 16, 0.85);
+            --accent: #8b5cf6;
+            --accent-soft: rgba(139, 92, 246, 0.14);
+            --accent-glow: rgba(139, 92, 246, 0.25);
+            --text-main: #f3f1f8;
+            --text-muted: #8e89a3;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(139, 92, 246, 0.45);
+        }
+        body.light-theme {
+            --bg-main: #f7f6fb;
+            --bg-surface: #ffffff;
+            --bg-elevated: #f0eef7;
+            --header-bg: rgba(247, 246, 251, 0.88);
+            --accent: #7c3aed;
+            --accent-soft: rgba(124, 58, 237, 0.1);
+            --accent-glow: rgba(124, 58, 237, 0.18);
+            --text-main: #181622;
+            --text-muted: #645f78;
+            --border: rgba(24, 22, 34, 0.09);
+            --border-hover: rgba(124, 58, 237, 0.45);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Montserrat', sans-serif; background: var(--bg-dark); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
-        .bg-glow { position: fixed; width: 550px; height: 550px; border-radius: 50%; filter: blur(150px); z-index: -1; opacity: 0.28; }
-        .glow-1 { top: -120px; left: -100px; background: #7b2cbf; }
-        .glow-2 { bottom: -120px; right: -100px; background: #c77dff; }
-        header { background: rgba(11, 7, 20, 0.88); backdrop-filter: blur(14px); padding: 14px 35px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); position: sticky; top: 0; z-index: 100; }
-        .logo-wrap { display: flex; align-items: center; gap: 12px; }
-        .site-logo { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; box-shadow: 0 0 15px rgba(213, 92, 255, 0.5); }
-        .logo-text { font-family: 'Rajdhani', sans-serif; font-size: 28px; font-weight: 700; letter-spacing: 3px; background: linear-gradient(90deg, #fff, var(--accent-neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        nav { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-        nav button, nav a { background: transparent; border: 1px solid transparent; color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; padding: 10px 16px; border-radius: 8px; cursor: pointer; transition: 0.25s; text-decoration: none; }
-        nav button:hover, nav a:hover { color: #fff; background: rgba(199, 125, 255, 0.12); }
-        nav button.active { color: #fff; background: linear-gradient(135deg, rgba(157, 78, 221, 0.4), rgba(213, 92, 255, 0.2)); border-color: rgba(213, 92, 255, 0.6); box-shadow: 0 0 18px rgba(157, 78, 221, 0.4); }
-        nav a.ds-link { color: #e0aaff; border-color: rgba(213, 92, 255, 0.45); background: rgba(123, 44, 191, 0.2); }
-        main { max-width: 1050px; margin: 35px auto; padding: 0 20px; }
-        .page { display: none; animation: fadeUp 0.35s ease; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; overflow-x: hidden; transition: background-color 0.25s ease, color 0.25s ease; }
+        #cursor-glow { position: fixed; top: 0; left: 0; width: 340px; height: 340px; border-radius: 50%; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); pointer-events: none; transform: translate(-50%, -50%); z-index: 0; opacity: 0; transition: opacity 0.3s ease; }
+        @media (hover: none) { #cursor-glow { display: none; } }
+        header { background: var(--header-bg); backdrop-filter: blur(12px); padding: 14px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 12px; }
+        .left-head { display: flex; align-items: center; gap: 16px; }
+        .controls-group { display: flex; align-items: center; gap: 4px; background: var(--bg-surface); padding: 4px; border-radius: 8px; border: 1px solid var(--border); }
+        .ctrl-btn { display: flex; align-items: center; gap: 6px; background: transparent; border: none; color: var(--text-muted); font-family: inherit; font-size: 12px; font-weight: 600; padding: 5px 9px; border-radius: 6px; cursor: pointer; transition: 0.18s; }
+        .ctrl-btn:hover { color: var(--text-main); background: var(--bg-elevated); }
+        .ctrl-btn.active { background: var(--accent-soft); color: var(--accent); }
+        .ctrl-btn:active { transform: scale(0.95); }
+        .flag-icon { width: 16px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+        .logo-wrap { display: flex; align-items: center; gap: 10px; }
+        .site-logo { width: 34px; height: 34px; border-radius: 7px; object-fit: cover; }
+        .logo-text { font-family: 'Rajdhani', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: 2px; color: var(--text-main); }
+        .logo-text span { color: var(--accent); }
+        nav { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+        .btn-ui { background: transparent; border: 1px solid transparent; color: var(--text-muted); font-family: inherit; font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 8px; cursor: pointer; text-decoration: none; transition: 0.15s; user-select: none; }
+        .btn-ui:hover { color: var(--text-main); background: var(--bg-surface); border-color: var(--border); }
+        .btn-ui.active { color: var(--accent); background: var(--accent-soft); border-color: var(--border-hover); }
+        .btn-ui:active { transform: scale(0.96); box-shadow: 0 0 12px var(--accent-glow); border-color: var(--accent); }
+        .ds-link { border-color: var(--border); color: var(--text-main); background: var(--bg-surface); }
+        .ds-link:hover { border-color: var(--accent); color: var(--accent); }
+        main { max-width: 1000px; margin: 40px auto; padding: 0 20px; position: relative; z-index: 1; }
+        .page { display: none; animation: fadeIn 0.25s ease; }
         .page.active { display: block; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-        .hero { background: linear-gradient(135deg, rgba(32, 18, 58, 0.85), rgba(14, 9, 26, 0.95)); border: 1px solid var(--border-glass); border-left: 4px solid var(--accent-neon); border-radius: 14px; padding: 30px; margin-bottom: 35px; }
-        .hero h1 { font-size: 28px; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; }
-        .hero p { color: var(--text-muted); line-height: 1.6; font-size: 15px; }
-        .section-title { font-family: 'Rajdhani', sans-serif; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 18px; border-left: 4px solid var(--accent-neon); padding-left: 12px; }
-        .top3-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-bottom: 40px; }
-        .card { background: var(--card-bg); border: 1px solid var(--border-glass); border-radius: 14px; padding: 22px; transition: 0.3s; }
-        .card:hover { transform: translateY(-4px); border-color: var(--accent-neon); box-shadow: 0 10px 25px rgba(123, 44, 191, 0.3); }
-        .rank-badge { font-family: 'Rajdhani', sans-serif; font-size: 17px; font-weight: 700; color: #e0aaff; margin-bottom: 8px; display: flex; justify-content: space-between; }
-        .points-pill { background: rgba(157, 78, 221, 0.25); border: 1px solid rgba(213, 92, 255, 0.5); padding: 3px 10px; border-radius: 20px; font-size: 13px; }
-        .team-name { font-size: 21px; font-weight: 900; margin-bottom: 12px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .hero { background: var(--bg-surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 12px; padding: 28px 32px; margin-bottom: 36px; }
+        .hero h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+        .hero p { color: var(--text-muted); line-height: 1.6; font-size: 14px; max-width: 720px; }
+        .section-title { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-muted); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .section-title::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+        .top3-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 40px; }
+        .card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; transition: 0.2s; }
+        .card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+        .rank-badge { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .points-pill { background: var(--accent-soft); color: var(--accent); padding: 3px 9px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+        .team-name { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
         .roster { display: flex; flex-wrap: wrap; gap: 6px; }
-        .player-tag { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(199, 125, 255, 0.2); padding: 4px 9px; border-radius: 6px; font-size: 12px; color: #e6d9ff; }
-        .table-wrapper { background: var(--card-bg); border: 1px solid var(--border-glass); border-radius: 14px; overflow-x: auto; }
+        .player-tag { background: var(--bg-elevated); border: 1px solid var(--border); padding: 4px 8px; border-radius: 6px; font-size: 12px; color: var(--text-muted); }
+        .table-wrapper { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; }
-        th { background: rgba(157, 78, 221, 0.15); color: #d8bbff; font-size: 12px; text-transform: uppercase; padding: 15px; text-align: left; }
-        td { padding: 16px 15px; border-top: 1px solid var(--border-glass); font-size: 14px; }
-        .pts-cell { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 19px; color: var(--accent-neon); }
-        footer { text-align: center; padding: 25px; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border-glass); margin-top: 50px; }
+        th { color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--border); }
+        td { padding: 15px 18px; border-top: 1px solid var(--border); font-size: 14px; }
+        tr:hover td { background: var(--bg-elevated); }
+        .pts-cell { font-weight: 700; color: var(--accent); }
+        footer { text-align: center; padding: 24px; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border); margin-top: 60px; }
     </style>
 </head>
 <body>
-    <div class="bg-glow glow-1"></div>
-    <div class="bg-glow glow-2"></div>
-    <header>
-        <div class="logo-wrap">
-            <img src="logo.png" alt="TOTV" class="site-logo" onerror="this.style.display='none'">
-            <div class="logo-text">TOTV // ESPORTS</div>
-        </div>
-        <nav>
-            <button class="tab-btn active" onclick="openPage('home', this)">Главная</button>
-            <button class="tab-btn" onclick="openPage('rating', this)">Рейтинг команд</button>
-            <button class="tab-btn" onclick="openPage('hall', this)">Зал славы</button>
-            <a href="discord.html" class="ds-link">Турниры & Discord →</a>
-        </nav>
-    </header>
-    <!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOTV — Киберспортивная платформа</title>
-    <link href="https://googleapis.com" rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #07050c;
-            --card-bg: rgba(22, 14, 38, 0.72);
-            --accent-neon: #d55cff;
-            --text-main: #f5f2ff;
-            --text-muted: #9b8cb8;
-            --border-glass: rgba(180, 110, 255, 0.22);
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Montserrat', sans-serif; background: var(--bg-dark); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
-        .bg-glow { position: fixed; width: 550px; height: 550px; border-radius: 50%; filter: blur(150px); z-index: -1; opacity: 0.28; }
-        .glow-1 { top: -120px; left: -100px; background: #7b2cbf; }
-        .glow-2 { bottom: -120px; right: -100px; background: #c77dff; }
-        header { background: rgba(11, 7, 20, 0.88); backdrop-filter: blur(14px); padding: 14px 35px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 12px; }
-        .left-head { display: flex; align-items: center; gap: 18px; }
-        .lang-switch { display: flex; gap: 5px; background: rgba(255, 255, 255, 0.04); padding: 4px; border-radius: 8px; border: 1px solid var(--border-glass); }
-        .lang-btn { display: flex; align-items: center; gap: 6px; background: transparent; border: none; color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; padding: 5px 9px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
-        .lang-btn:hover { color: #fff; }
-        .lang-btn.active { background: rgba(157, 78, 221, 0.45); color: #fff; box-shadow: 0 0 10px rgba(213, 92, 255, 0.35); }
-        .flag-icon { width: 18px; height: 13px; border-radius: 2px; object-fit: cover; flex-shrink: 0; }
-        .logo-wrap { display: flex; align-items: center; gap: 12px; }
-        .site-logo { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; box-shadow: 0 0 15px rgba(213, 92, 255, 0.5); }
-        .logo-text { font-family: 'Rajdhani', sans-serif; font-size: 28px; font-weight: 700; letter-spacing: 3px; background: linear-gradient(90deg, #fff, var(--accent-neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        nav { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-        nav button, .nav-link { background: transparent; border: 1px solid transparent; color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; padding: 10px 16px; border-radius: 8px; cursor: pointer; transition: 0.25s; text-decoration: none; }
-        nav button:hover, .nav-link:hover { color: #fff; background: rgba(199, 125, 255, 0.12); }
-        nav button.active { color: #fff; background: linear-gradient(135deg, rgba(157, 78, 221, 0.4), rgba(213, 92, 255, 0.2)); border-color: rgba(213, 92, 255, 0.6); box-shadow: 0 0 18px rgba(157, 78, 221, 0.4); }
-        .nav-link.ds-btn { border-color: rgba(213, 92, 255, 0.45); color: #e0aaff; }
-        main { max-width: 1050px; margin: 35px auto; padding: 0 20px; }
-        .page { display: none; animation: fadeUp 0.35s ease; }
-        .page.active { display: block; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-        .hero { background: linear-gradient(135deg, rgba(32, 18, 58, 0.85), rgba(14, 9, 26, 0.95)); border: 1px solid var(--border-glass); border-left: 4px solid var(--accent-neon); border-radius: 14px; padding: 30px; margin-bottom: 35px; }
-        .hero h1 { font-size: 28px; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; }
-        .hero p { color: var(--text-muted); line-height: 1.6; font-size: 15px; }
-        .section-title { font-family: 'Rajdhani', sans-serif; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 18px; border-left: 4px solid var(--accent-neon); padding-left: 12px; }
-        .top3-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-bottom: 40px; }
-        .card { background: var(--card-bg); border: 1px solid var(--border-glass); border-radius: 14px; padding: 22px; transition: 0.3s; }
-        .card:hover { transform: translateY(-4px); border-color: var(--accent-neon); box-shadow: 0 10px 25px rgba(123, 44, 191, 0.3); }
-        .rank-badge { font-family: 'Rajdhani', sans-serif; font-size: 17px; font-weight: 700; color: #e0aaff; margin-bottom: 8px; display: flex; justify-content: space-between; }
-        .points-pill { background: rgba(157, 78, 221, 0.25); border: 1px solid rgba(213, 92, 255, 0.5); padding: 3px 10px; border-radius: 20px; font-size: 13px; }
-        .team-name { font-size: 21px; font-weight: 900; margin-bottom: 12px; }
-        .roster { display: flex; flex-wrap: wrap; gap: 6px; }
-        .player-tag { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(199, 125, 255, 0.2); padding: 4px 9px; border-radius: 6px; font-size: 12px; color: #e6d9ff; }
-        .table-wrapper { background: var(--card-bg); border: 1px solid var(--border-glass); border-radius: 14px; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; }
-        th { background: rgba(157, 78, 221, 0.15); color: #d8bbff; font-size: 12px; text-transform: uppercase; padding: 15px; text-align: left; }
-        td { padding: 16px 15px; border-top: 1px solid var(--border-glass); font-size: 14px; }
-        .pts-cell { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 19px; color: var(--accent-neon); }
-        footer { text-align: center; padding: 25px; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border-glass); margin-top: 50px; }
-    </style>
-</head>
-<body>
-    <div class="bg-glow glow-1"></div>
-    <div class="bg-glow glow-2"></div>
+    <div id="cursor-glow"></div>
     <header>
         <div class="left-head">
-            <div class="lang-switch">
-                <button class="lang-btn active" id="btn-ru" onclick="setLang('ru')">
+            <div class="controls-group">
+                <button class="ctrl-btn active" id="btn-ru" onclick="setLang('ru')">
                     <svg class="flag-icon" viewBox="0 0 9 6"><rect width="9" height="2" fill="#fff"/><rect y="2" width="9" height="2" fill="#0039a6"/><rect y="4" width="9" height="2" fill="#d52b1e"/></svg>
                     RU
                 </button>
-                <button class="lang-btn" id="btn-en" onclick="setLang('en')">
+                <button class="ctrl-btn" id="btn-en" onclick="setLang('en')">
                     <svg class="flag-icon" viewBox="0 0 60 30"><clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath><g clip-path="url(#s)"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></g></svg>
                     EN
                 </button>
+                <span style="color: var(--border); margin: 0 2px;">|</span>
+                <button class="ctrl-btn" id="theme-btn" onclick="toggleTheme()" title="Сменить тему">☀️</button>
             </div>
             <div class="logo-wrap">
                 <img src="logo.png" alt="TOTV" class="site-logo" onerror="this.style.display='none'">
-                <div class="logo-text">TOTV // ESPORTS</div>
+                <div class="logo-text">TOTV<span>.</span></div>
             </div>
         </div>
         <nav>
-            <button class="tab-btn active" data-t="navHome" onclick="openPage('home', this)">Главная</button>
-            <button class="tab-btn" data-t="navRating" onclick="openPage('rating', this)">Рейтинг команд</button>
-            <button class="tab-btn" data-t="navHall" onclick="openPage('hall', this)">Зал славы</button>
-            <a href="discord.html" class="nav-link ds-btn" data-t="navDs">Турниры и Discord</a>
+            <button class="btn-ui tab-btn active" data-t="navHome" onclick="openPage('home', this)">Главная</button>
+            <button class="btn-ui tab-btn" data-t="navRating" onclick="openPage('rating', this)">Рейтинг команд</button>
+            <button class="btn-ui tab-btn" data-t="navHall" onclick="openPage('hall', this)">Зал славы</button>
+            <a href="discord.html" class="btn-ui ds-link" data-t="navDs">Турниры и Discord →</a>
         </nav>
     </header>
     <main>
         <section id="home" class="page active">
             <div class="hero">
-                <h1>Добро пожаловать на TOTV!</h1>
-                <p>Главная платформа для информации, новостей и рейтинга киберспортивных турниров серверов <strong style="color:#e0aaff">The Order & ИгРоМаНиЯ</strong>. Статистика и история нашего киберспорта. Следите за обновлениями, участвуйте в соревнованиях и попадите в зал славы!</p>
+                <h1 data-t="heroTitle">Добро пожаловать на TOTV</h1>
+                <p data-t="heroDesc">Платформа новостей, статистики и рейтинга киберспортивных турниров серверов The Order & ИгРоМаНиЯ. Следите за обновлениями, участвуйте в соревнованиях и попадите в зал славы.</p>
             </div>
-            <div class="section-title">Топ 3 Месяца</div>
+            <div class="section-title" data-t="topTitle">Топ 3 Месяца</div>
             <div class="top3-grid">
                 <div class="card">
-                    <div class="rank-badge"><span>🥇 #1 МЕСТО</span><span class="points-pill">655 PTS</span></div>
+                    <div class="rank-badge"><span data-t="rank1">#1 Место</span><span class="points-pill">655 PTS</span></div>
                     <div class="team-name">Somali Pirates</div>
                     <div class="roster"><span class="player-tag">Airship</span><span class="player-tag">Kapibarbl4</span><span class="player-tag">salxart</span><span class="player-tag">Drusya</span><span class="player-tag">He</span></div>
                 </div>
                 <div class="card">
-                    <div class="rank-badge"><span>🥈 #2 МЕСТО</span><span class="points-pill">596 PTS</span></div>
+                    <div class="rank-badge"><span data-t="rank2">#2 Место</span><span class="points-pill">596 PTS</span></div>
                     <div class="team-name">Blue Squirrel</div>
                     <div class="roster"><span class="player-tag">SEVka</span><span class="player-tag">STEPASA</span><span class="player-tag">Agressor</span><span class="player-tag">bykotik</span><span class="player-tag">Five</span></div>
                 </div>
                 <div class="card">
-                    <div class="rank-badge"><span>🥉 #3 МЕСТО</span><span class="points-pill">205 PTS</span></div>
+                    <div class="rank-badge"><span data-t="rank3">#3 Место</span><span class="points-pill">205 PTS</span></div>
                     <div class="team-name">Crazy Bees</div>
                     <div class="roster"><span class="player-tag">*p*4*e*l*k*a*</span><span class="player-tag">kill_airship</span><span class="player-tag">MaryKrouls</span><span class="player-tag">F**k you</span></div>
                 </div>
@@ -185,7 +139,7 @@
             <div class="section-title">Counter-Strike Rating</div>
             <div class="table-wrapper">
                 <table>
-                    <thead><tr><th>Место</th><th>Команда</th><th>Состав</th><th>Очки</th></tr></thead>
+                    <thead><tr><th data-t="thPlace">Место</th><th data-t="thTeam">Команда</th><th data-t="thRoster">Состав</th><th data-t="thPts">Очки</th></tr></thead>
                     <tbody>
                         <tr><td><strong>#1</strong></td><td><strong>Somali Pirates</strong></td><td>Airship, Kapibarbl4, salxart, Drusya, He</td><td class="pts-cell">655</td></tr>
                         <tr><td><strong>#2</strong></td><td><strong>Blue Squirrel</strong></td><td>SEVka, STEPASA, Agressor, bykotik, Five</td><td class="pts-cell">596</td></tr>
@@ -196,21 +150,74 @@
         </section>
 
         <section id="hall" class="page">
-            <div class="section-title">Зал славы</div>
+            <div class="section-title" data-t="navHall">Зал славы</div>
             <div class="card">
-                <div class="team-name">История Blue Squirrel</div>
-                <p style="color:#9b8cb8">Архив достижений и история легендарного состава.</p>
+                <div class="team-name" data-t="bsTitle">История Blue Squirrel</div>
+                <p style="color:var(--text-muted); font-size:14px;" data-t="bsDesc">Архив достижений и история легендарного состава.</p>
             </div>
         </section>
     </main>
-    <footer>© 2026 TOTV. Все права защищены. | The Order & ИгРоМаНиЯ</footer>
+    <footer data-t="footerTxt">© 2026 TOTV. Все права защищены. | The Order & ИгРоМаНиЯ</footer>
+
     <script>
+        const glow = document.getElementById("cursor-glow");
+        document.addEventListener("mousemove", (e) => {
+            glow.style.opacity = "1";
+            glow.style.left = e.clientX + "px";
+            glow.style.top = e.clientY + "px";
+        });
+        document.addEventListener("mouseleave", () => { glow.style.opacity = "0"; });
+
+        function applyTheme(theme) {
+            const isLight = theme === "light";
+            document.body.classList.toggle("light-theme", isLight);
+            document.getElementById("theme-btn").textContent = isLight ? "🌙" : "☀️";
+            localStorage.setItem("totv_theme", theme);
+        }
+        function toggleTheme() {
+            applyTheme(document.body.classList.contains("light-theme") ? "dark" : "light");
+        }
+        applyTheme(localStorage.getItem("totv_theme") || "dark");
+
+        const dict = {
+            ru: {
+                navHome: "Главная", navRating: "Рейтинг команд", navHall: "Зал славы", navDs: "Турниры и Discord →",
+                heroTitle: "Добро пожаловать на TOTV",
+                heroDesc: "Платформа новостей, статистики и рейтинга киберспортивных турниров серверов The Order & ИгРоМаНиЯ. Следите за обновлениями, участвуйте в соревнованиях и попадите в зал славы.",
+                topTitle: "Топ 3 Месяца", rank1: "#1 Место", rank2: "#2 Место", rank3: "#3 Место",
+                thPlace: "Место", thTeam: "Команда", thRoster: "Состав", thPts: "Очки",
+                bsTitle: "История Blue Squirrel", bsDesc: "Архив достижений и история легендарного состава.",
+                footerTxt: "© 2026 TOTV. Все права защищены. | The Order & ИгРоМаНиЯ"
+            },
+            en: {
+                navHome: "Home", navRating: "Team Rating", navHall: "Hall of Fame", navDs: "Tournaments & Discord →",
+                heroTitle: "Welcome to TOTV",
+                heroDesc: "The main hub for news, stats, and esports tournament rankings of The Order & IgRoMaNiYa servers. Follow updates, compete in tournaments, and enter the Hall of Fame.",
+                topTitle: "Top 3 of the Month", rank1: "#1 Place", rank2: "#2 Place", rank3: "#3 Place",
+                thPlace: "Rank", thTeam: "Team", thRoster: "Roster", thPts: "Points",
+                bsTitle: "History of Blue Squirrel", bsDesc: "Archive of achievements and history of the legendary roster.",
+                footerTxt: "© 2026 TOTV. All rights reserved. | The Order & IgRoMaNiYa"
+            }
+        };
+
+        function setLang(lang) {
+            localStorage.setItem("totv_lang", lang);
+            document.getElementById("btn-ru").classList.toggle("active", lang === "ru");
+            document.getElementById("btn-en").classList.toggle("active", lang === "en");
+            document.querySelectorAll("[data-t]").forEach(el => {
+                const key = el.getAttribute("data-t");
+                if (dict[lang][key]) el.textContent = dict[lang][key];
+            });
+        }
+
         function openPage(pageId, btn) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             btn.classList.add('active');
         }
+
+        setLang(localStorage.getItem("totv_lang") || "ru");
     </script>
 </body>
 </html>
