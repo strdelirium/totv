@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOTV — Связь с Discord</title>
+    <style>
+        body {
+            background: #07050c;
+            color: #f5f2ff;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .box {
+            background: rgba(22, 14, 38, 0.85);
+            border: 1px solid rgba(213, 92, 255, 0.3);
+            border-radius: 14px;
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 0 30px rgba(157, 78, 221, 0.25);
+        }
+        h2 { margin-top: 0; color: #e0aaff; }
+        input, textarea, select {
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 14px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(213, 92, 255, 0.4);
+            background: #0e0918;
+            color: #fff;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #7b2cbf, #c77dff);
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        #status { margin-top: 12px; font-weight: bold; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Отправка заявки в Discord</h2>
+    <form id="dsForm">
+        <select id="game">
+            <option value="Counter-Strike">Counter-Strike</option>
+            <option value="Dota 2">Dota 2</option>
+        </select>
+        <input type="text" id="team" placeholder="Название команды" required>
+        <input type="text" id="discordTag" placeholder="Ваш Discord (например, @user)" required>
+        <textarea id="players" rows="3" placeholder="Состав команды (ники игроков)" required></textarea>
+        <button type="submit" id="btn">Отправить на сервер</button>
+    </form>
+    <div id="status"></div>
+</div>
+
+<script>
+    const WEBHOOK_URL = "https://discord.com/api/webhooks/1575601744107540520/nnijqIVjiu1zfuQkndqiUwuI8nuQdKflKrdJmOb329z55XkM00ea1R7BJlTFqWSJd7l_";
+
+    document.getElementById("dsForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+        const btn = document.getElementById("btn");
+        const status = document.getElementById("status");
+        
+        btn.disabled = true;
+        btn.textContent = "Отправка...";
+
+        const data = {
+            embeds: [{
+                title: "🎮 Новая заявка с сайта TOTV",
+                color: 10309341,
+                fields: [
+                    { name: "Дисциплина", value: document.getElementById("game").value, inline: true },
+                    { name: "Команда", value: document.getElementById("team").value, inline: true },
+                    { name: "Капитан", value: document.getElementById("discordTag").value, inline: false },
+                    { name: "Состав", value: document.getElementById("players").value, inline: false }
+                ]
+            }]
+        };
+
+        try {
+            const response = await fetch(WEBHOOK_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                status.style.color = "#4ade80";
+                status.textContent = "✅ Отправлено в Discord!";
+                e.target.reset();
+            } else {
+                throw new Error();
+            }
+        } catch (err) {
+            status.style.color = "#f87171";
+            status.textContent = "❌ Ошибка! Проверь ссылку вебхука.";
+        }
+
+        btn.disabled = false;
+        btn.textContent = "Отправить на сервер";
+    });
+</script>
+
+</body>
+</html>
