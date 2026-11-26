@@ -284,9 +284,36 @@
         function animateLines() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const rgb = getComputedStyle(document.body).getPropertyValue("--line-rgb").trim();
-
             for (let i = 0; i < particles.length; i++) {
                 let p = particles[i];
+
+                // Космическая инерция: плавное торможение до базовой скорости дрейфа
+                let speed = Math.hypot(p.vx, p.vy);
+                if (speed > 0.65) {
+                    p.vx *= 0.992;
+                    p.vy *= 0.992;
+                }
+
+                // Гравитационный разгон при нахождении курсора в радиусе
+                if (mouse.x !== null) {
+                    let dx = mouse.x - p.x;
+                    let dy = mouse.y - p.y;
+                    let mDist = Math.hypot(dx, dy);
+                    if (mDist < 160 && mDist > 5) {
+                        let pull = (1 - mDist / 160) * 0.035;
+                        p.vx += (dx / mDist) * pull;
+                        p.vy += (dy / mDist) * pull;
+                    }
+                }
+
+                // Ограничитель максимальной скорости, чтобы не улетали в гиперпространство
+                let maxSpeed = 3.2;
+                let currentSpeed = Math.hypot(p.vx, p.vy);
+                if (currentSpeed > maxSpeed) {
+                    p.vx = (p.vx / currentSpeed) * maxSpeed;
+                    p.vy = (p.vy / currentSpeed) * maxSpeed;
+                }
+
                 p.x += p.vx;
                 p.y += p.vy;
                 if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
@@ -309,17 +336,14 @@
                         ctx.stroke();
                     }
                 }
-                               if (mouse.x !== null) {
-                    let dx = mouse.x - p.x;
-                    let dy = mouse.y - p.y;
-                    let mDist = Math.hypot(dx, dy);
-                    if (mDist < 150) {
-                        p.x += dx * 0.012;
-                        p.y += dy * 0.012;
+
+                if (mouse.x !== null) {
+                    let mDist = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+                    if (mDist < 160) {
                         ctx.beginPath();
                         ctx.moveTo(p.x, p.y);
                         ctx.lineTo(mouse.x, mouse.y);
-                        ctx.strokeStyle = `rgba(${rgb}, ${0.45 * (1 - mDist / 150)})`;
+                        ctx.strokeStyle = `rgba(${rgb}, ${0.45 * (1 - mDist / 160)})`;
                         ctx.lineWidth = 1.1;
                         ctx.stroke();
                     }
