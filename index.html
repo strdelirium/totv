@@ -7,13 +7,13 @@
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #090b10;
-            --card-bg: rgba(20, 25, 38, 0.65);
-            --accent-orange: #ff5500;
-            --accent-blue: #00d2ff;
-            --text-main: #f4f6f9;
-            --text-muted: #8a94a6;
-            --border-glass: rgba(255, 255, 255, 0.08);
+            --bg-dark: #07050c;
+            --card-bg: rgba(22, 14, 38, 0.65);
+            --accent-purple: #9d4edd;
+            --accent-neon: #d55cff;
+            --text-main: #f5f2ff;
+            --text-muted: #9b8cb8;
+            --border-glass: rgba(180, 110, 255, 0.16);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,29 +27,31 @@
             position: relative;
         }
 
+        /* Фиолетовое неоновое свечение на фоне */
         .bg-glow {
             position: fixed;
-            width: 550px;
-            height: 550px;
+            width: 580px;
+            height: 580px;
             border-radius: 50%;
             filter: blur(150px);
             z-index: -1;
-            opacity: 0.22;
+            opacity: 0.28;
             animation: floatGlow 10s infinite alternate ease-in-out;
         }
-        .glow-1 { top: -120px; left: -100px; background: var(--accent-orange); }
-        .glow-2 { bottom: -120px; right: -100px; background: var(--accent-blue); animation-delay: -5s; }
+        .glow-1 { top: -140px; left: -100px; background: #7b2cbf; }
+        .glow-2 { bottom: -140px; right: -100px; background: #c77dff; animation-delay: -5s; }
 
         @keyframes floatGlow {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(40px, 30px) scale(1.1); }
+            100% { transform: translate(45px, 35px) scale(1.12); }
         }
 
+        /* Шапка */
         header {
-            background: rgba(12, 15, 23, 0.8);
+            background: rgba(11, 7, 20, 0.85);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
-            padding: 18px 40px;
+            padding: 16px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -59,15 +61,32 @@
             z-index: 100;
         }
 
+        .logo-wrap { display: flex; align-items: center; gap: 12px; }
+
+        .logo-badge {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #5a189a, #c77dff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            color: #fff;
+            box-shadow: 0 0 18px rgba(199, 125, 255, 0.6);
+        }
+
         .logo {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 700;
             letter-spacing: 3px;
-            background: linear-gradient(90deg, #fff, var(--accent-orange));
+            background: linear-gradient(90deg, #ffffff, var(--accent-neon));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 25px rgba(255, 85, 0, 0.3);
+            text-shadow: 0 0 25px rgba(199, 125, 255, 0.4);
         }
 
         nav { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -77,7 +96,7 @@
             border: 1px solid transparent;
             color: var(--text-muted);
             font-family: 'Montserrat', sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -89,21 +108,17 @@
 
         nav button:hover {
             color: #fff;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(199, 125, 255, 0.1);
         }
 
         nav button.active {
             color: #fff;
-            background: linear-gradient(135deg, rgba(255, 85, 0, 0.25), rgba(0, 210, 255, 0.15));
-            border: 1px solid rgba(255, 85, 0, 0.5);
-            box-shadow: 0 0 18px rgba(255, 85, 0, 0.25);
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.35), rgba(213, 92, 255, 0.2));
+            border: 1px solid rgba(213, 92, 255, 0.6);
+            box-shadow: 0 0 20px rgba(157, 78, 221, 0.4);
         }
 
-        main {
-            max-width: 1050px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
+        main { max-width: 1050px; margin: 40px auto; padding: 0 20px; }
 
         .page { display: none; animation: fadeUp 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
         .page.active { display: block; }
@@ -113,31 +128,21 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Главный баннер */
         .hero {
-            background: linear-gradient(135deg, rgba(25, 31, 48, 0.8), rgba(13, 17, 26, 0.9));
+            background: linear-gradient(135deg, rgba(32, 18, 58, 0.85), rgba(14, 9, 26, 0.92));
             border: 1px solid var(--border-glass);
-            border-left: 4px solid var(--accent-orange);
+            border-left: 4px solid var(--accent-neon);
             border-radius: 14px;
             padding: 35px;
             margin-bottom: 40px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 30px rgba(157, 78, 221, 0.12);
         }
 
-        .hero h1 {
-            font-size: 30px;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            letter-spacing: 1px;
-        }
-
-        .hero p {
-            color: var(--text-muted);
-            line-height: 1.6;
-            font-size: 15px;
-            max-width: 750px;
-        }
+        .hero h1 { font-size: 30px; font-weight: 900; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1px; }
+        .hero p { color: var(--text-muted); line-height: 1.6; font-size: 15px; max-width: 780px; }
+        .hero strong { color: #e0aaff; }
 
         .section-title {
             font-family: 'Rajdhani', sans-serif;
@@ -156,11 +161,12 @@
             display: inline-block;
             width: 6px;
             height: 24px;
-            background: var(--accent-blue);
+            background: var(--accent-neon);
             border-radius: 3px;
-            box-shadow: 0 0 10px var(--accent-blue);
+            box-shadow: 0 0 12px var(--accent-neon);
         }
 
+        /* Карточки */
         .top3-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
@@ -179,19 +185,19 @@
 
         .card:hover {
             transform: translateY(-6px);
-            border-color: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+            border-color: rgba(213, 92, 255, 0.55);
+            box-shadow: 0 12px 30px rgba(123, 44, 191, 0.3);
         }
 
-        .card.rank-1 { border-top: 3px solid #ffd700; box-shadow: 0 8px 25px rgba(255, 215, 0, 0.08); }
-        .card.rank-2 { border-top: 3px solid #c0c0c0; }
-        .card.rank-3 { border-top: 3px solid #cd7f32; }
+        .card.rank-1 { border-top: 3px solid #ffd700; }
+        .card.rank-2 { border-top: 3px solid #e0aaff; }
+        .card.rank-3 { border-top: 3px solid #9d4edd; }
 
         .rank-badge {
             font-family: 'Rajdhani', sans-serif;
             font-size: 18px;
             font-weight: 700;
-            color: var(--accent-orange);
+            color: #e0aaff;
             margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
@@ -199,89 +205,67 @@
         }
 
         .points-pill {
-            background: rgba(255, 85, 0, 0.15);
-            border: 1px solid rgba(255, 85, 0, 0.4);
-            color: #ff8c52;
-            padding: 4px 10px;
+            background: rgba(157, 78, 221, 0.25);
+            border: 1px solid rgba(213, 92, 255, 0.5);
+            color: #f3d5ff;
+            padding: 4px 12px;
             border-radius: 20px;
             font-size: 13px;
         }
 
-        .team-name {
-            font-size: 22px;
-            font-weight: 900;
-            margin-bottom: 14px;
-            color: #fff;
-        }
-
-        .roster {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
+        .team-name { font-size: 22px; font-weight: 900; margin-bottom: 14px; color: #fff; }
+        .roster { display: flex; flex-wrap: wrap; gap: 6px; }
         .player-tag {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(199, 125, 255, 0.2);
             padding: 4px 10px;
             border-radius: 6px;
             font-size: 12px;
-            color: #d1d8e5;
+            color: #e6d9ff;
         }
 
+        /* Таблица рейтинга */
         .table-wrapper {
             background: var(--card-bg);
             border: 1px solid var(--border-glass);
             border-radius: 14px;
-            overflow: hidden;
+            overflow-x: auto;
             backdrop-filter: blur(12px);
         }
 
         table { width: 100%; border-collapse: collapse; }
         th {
-            background: rgba(255, 255, 255, 0.04);
-            color: var(--text-muted);
+            background: rgba(157, 78, 221, 0.12);
+            color: #d8bbff;
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 1px;
             padding: 16px 20px;
             text-align: left;
         }
-        td {
-            padding: 18px 20px;
-            border-top: 1px solid var(--border-glass);
-            font-size: 14px;
-        }
+        td { padding: 18px 20px; border-top: 1px solid var(--border-glass); font-size: 14px; }
         tr { transition: background 0.2s ease; }
-        tr:hover { background: rgba(255, 255, 255, 0.03); }
+        tr:hover { background: rgba(199, 125, 255, 0.07); }
 
-        .pts-cell {
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--accent-blue);
-        }
+        .pts-cell { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 20px; color: var(--accent-neon); }
 
         .btn-glow {
             display: inline-block;
-            margin-top: 15px;
-            background: linear-gradient(90deg, var(--accent-orange), #ff2a00);
+            margin-top: 16px;
+            background: linear-gradient(90deg, #7b2cbf, #c77dff);
             color: #fff;
             border: none;
             padding: 12px 24px;
             border-radius: 8px;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(255, 85, 0, 0.4);
+            box-shadow: 0 0 22px rgba(157, 78, 221, 0.5);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .btn-glow:hover {
-            transform: scale(1.03);
-            box-shadow: 0 0 28px rgba(255, 85, 0, 0.7);
-        }
+        .btn-glow:hover { transform: scale(1.03); box-shadow: 0 0 30px rgba(213, 92, 255, 0.8); }
 
         footer {
             text-align: center;
@@ -305,16 +289,9 @@
     <div class="bg-glow glow-2"></div>
 
     <header>
-        <div class="logo">TOTV // ESPORTS</div>
+        <div class="logo-wrap">
+            <div class="logo-badge">И</div>
+            <div class="logo">TOTV // ESPORTS</div>
+        </div>
         <nav>
             <button class="tab-btn active" onclick="openPage('home', this)">Главная</button>
-            <button class="tab-btn" onclick="openPage('tournaments', this)">Турниры</button>
-            <button class="tab-btn" onclick="openPage('rating', this)">Рейтинг команд</button>
-            <button class="tab-btn" onclick="openPage('hall', this)">Зал славы</button>
-        </nav>
-    </header>
-
-    <main>
-        <!-- ГЛАВНАЯ -->
-        <section id="home" class="page active">
-            <div class="hero">
