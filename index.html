@@ -68,6 +68,93 @@
             <a href="discord.html" class="ds-link">Турниры & Discord →</a>
         </nav>
     </header>
+    <!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOTV — Киберспортивная платформа</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #07050c;
+            --card-bg: rgba(22, 14, 38, 0.72);
+            --accent-neon: #d55cff;
+            --text-main: #f5f2ff;
+            --text-muted: #9b8cb8;
+            --border-glass: rgba(180, 110, 255, 0.22);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg-dark); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
+        .bg-glow { position: fixed; width: 550px; height: 550px; border-radius: 50%; filter: blur(150px); z-index: -1; opacity: 0.28; }
+        .glow-1 { top: -120px; left: -100px; background: #7b2cbf; }
+        .glow-2 { bottom: -120px; right: -100px; background: #c77dff; }
+        header { background: rgba(11, 7, 20, 0.88); backdrop-filter: blur(14px); padding: 14px 35px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 12px; }
+        .left-head { display: flex; align-items: center; gap: 18px; }
+        .lang-switch { display: flex; gap: 5px; background: rgba(255, 255, 255, 0.04); padding: 4px; border-radius: 8px; border: 1px solid var(--border-glass); }
+        .lang-btn { display: flex; align-items: center; gap: 6px; background: transparent; border: none; color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; padding: 5px 9px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .lang-btn:hover { color: #fff; }
+        .lang-btn.active { background: rgba(157, 78, 221, 0.45); color: #fff; box-shadow: 0 0 10px rgba(213, 92, 255, 0.35); }
+        .flag-icon { width: 18px; height: 13px; border-radius: 2px; object-fit: cover; flex-shrink: 0; }
+        .logo-wrap { display: flex; align-items: center; gap: 12px; }
+        .site-logo { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; box-shadow: 0 0 15px rgba(213, 92, 255, 0.5); }
+        .logo-text { font-family: 'Rajdhani', sans-serif; font-size: 28px; font-weight: 700; letter-spacing: 3px; background: linear-gradient(90deg, #fff, var(--accent-neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        nav { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        nav button, .nav-link { background: transparent; border: 1px solid transparent; color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; padding: 10px 16px; border-radius: 8px; cursor: pointer; transition: 0.25s; text-decoration: none; }
+        nav button:hover, .nav-link:hover { color: #fff; background: rgba(199, 125, 255, 0.12); }
+        nav button.active { color: #fff; background: linear-gradient(135deg, rgba(157, 78, 221, 0.4), rgba(213, 92, 255, 0.2)); border-color: rgba(213, 92, 255, 0.6); box-shadow: 0 0 18px rgba(157, 78, 221, 0.4); }
+        .nav-link.ds-btn { border-color: rgba(213, 92, 255, 0.45); color: #e0aaff; }
+        main { max-width: 1050px; margin: 35px auto; padding: 0 20px; }
+        .page { display: none; animation: fadeUp 0.35s ease; }
+        .page.active { display: block; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+        .hero { background: linear-gradient(135deg, rgba(32, 18, 58, 0.85), rgba(14, 9, 26, 0.95)); border: 1px solid var(--border-glass); border-left: 4px solid var(--accent-neon); border-radius: 14px; padding: 30px; margin-bottom: 35px; }
+        .hero h1 { font-size: 28px; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; }
+        .hero p { color: var(--text-muted); line-height: 1.6; font-size: 15px; }
+        .section-title { font-family: 'Rajdhani', sans-serif; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 18px; border-left: 4px solid var(--accent-neon); padding-left: 12px; }
+        .top3-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-bottom: 40px; }
+        .card { background: var(--card-bg); border: 1px solid var(--border-glass); border-radius: 14px; padding: 22px; transition: 0.3s; }
+        .card:hover { transform: translateY(-4px); border-color: var(--accent-neon); box-shadow: 0 10px 25px rgba(123, 44, 191, 0.3); }
+        .rank-badge { font-family: 'Rajdhani', sans-serif; font-size: 17px; font-weight: 700; color: #e0aaff; margin-bottom: 8px; display: flex; justify-content: space-between; }
+        .points-pill { background: rgba(157, 78, 221, 0.25); border: 1px solid rgba(213, 92, 255, 0.5); padding: 3px 10px; border-radius: 20px; font-size: 13px; }
+        .team-name { font-size: 21px; font-weight: 900; margin-bottom: 12px; }
+        .roster { display: flex; flex-wrap: wrap; gap: 6px; }
+        .player-tag { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(199, 125, 255, 0.2); padding: 4px 9px; border-radius: 6px; font-size: 12px; color: #e6d9ff; }
+        .table-wrapper { background: var(--card-bg); border: 1px solid var(--border-glass); border-radius: 14px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: rgba(157, 78, 221, 0.15); color: #d8bbff; font-size: 12px; text-transform: uppercase; padding: 15px; text-align: left; }
+        td { padding: 16px 15px; border-top: 1px solid var(--border-glass); font-size: 14px; }
+        .pts-cell { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 19px; color: var(--accent-neon); }
+        footer { text-align: center; padding: 25px; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border-glass); margin-top: 50px; }
+    </style>
+</head>
+<body>
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+    <header>
+        <div class="left-head">
+            <div class="lang-switch">
+                <button class="lang-btn active" id="btn-ru" onclick="setLang('ru')">
+                    <svg class="flag-icon" viewBox="0 0 9 6"><rect width="9" height="2" fill="#fff"/><rect y="2" width="9" height="2" fill="#0039a6"/><rect y="4" width="9" height="2" fill="#d52b1e"/></svg>
+                    RU
+                </button>
+                <button class="lang-btn" id="btn-en" onclick="setLang('en')">
+                    <svg class="flag-icon" viewBox="0 0 60 30"><clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath><g clip-path="url(#s)"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></g></svg>
+                    EN
+                </button>
+            </div>
+            <div class="logo-wrap">
+                <img src="logo.png" alt="TOTV" class="site-logo" onerror="this.style.display='none'">
+                <div class="logo-text">TOTV // ESPORTS</div>
+            </div>
+        </div>
+        <nav>
+            <button class="tab-btn active" data-t="navHome" onclick="openPage('home', this)">Главная</button>
+            <button class="tab-btn" data-t="navRating" onclick="openPage('rating', this)">Рейтинг команд</button>
+            <button class="tab-btn" data-t="navHall" onclick="openPage('hall', this)">Зал славы</button>
+            <a href="discord.html" class="nav-link ds-btn" data-t="navDs">Турниры и Discord</a>
+        </nav>
+    </header>
     <main>
         <section id="home" class="page active">
             <div class="hero">
