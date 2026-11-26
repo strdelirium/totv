@@ -210,13 +210,22 @@
                         ctx.strokeStyle = `rgba(${rgb}, ${0.15 * (1 - dist / 120)})`; ctx.lineWidth = 0.8; ctx.stroke();
                     }
                 }
-                if (mouse.x !== null) {
-                    let mDist = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+                                if (mouse.x !== null) {
+                    let dx = mouse.x - p.x;
+                    let dy = mouse.y - p.y;
+                    let mDist = Math.hypot(dx, dy);
                     if (mDist < 150) {
-                        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y);
-                        ctx.strokeStyle = `rgba(${rgb}, ${0.45 * (1 - mDist / 150)})`; ctx.lineWidth = 1.1; ctx.stroke();
+                        p.x += dx * 0.012;
+                        p.y += dy * 0.012;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.strokeStyle = `rgba(${rgb}, ${0.45 * (1 - mDist / 150)})`;
+                        ctx.lineWidth = 1.1;
+                        ctx.stroke();
                     }
                 }
+
             }
             requestAnimationFrame(animateLines);
         }
