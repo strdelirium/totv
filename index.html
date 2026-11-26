@@ -309,10 +309,13 @@
                         ctx.stroke();
                     }
                 }
-
-                if (mouse.x !== null) {
-                    let mDist = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+                               if (mouse.x !== null) {
+                    let dx = mouse.x - p.x;
+                    let dy = mouse.y - p.y;
+                    let mDist = Math.hypot(dx, dy);
                     if (mDist < 150) {
+                        p.x += dx * 0.012;
+                        p.y += dy * 0.012;
                         ctx.beginPath();
                         ctx.moveTo(p.x, p.y);
                         ctx.lineTo(mouse.x, mouse.y);
